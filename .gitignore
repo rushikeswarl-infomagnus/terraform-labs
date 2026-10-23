@@ -1,0 +1,17 @@
+# Terraform working data
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+crash.*.log
+
+# Local lab artifacts
+lab-*/*.txt
+lab-*/services/
+lab-*/modules/**/*.txt
+lab-*/inventory/
+
+# Local overrides
+*.tfvars
+!*.example.tfvars

@@ -1,0 +1,34 @@
+name: Terraform labs
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        lab:
+          - lab-01-basics
+          - lab-02-expressions
+          - lab-03-modules
+          - lab-04-state
+          - lab-05-testing
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.6
+      - name: Check formatting
+        run: terraform fmt -check -recursive
+      - name: Initialize
+        run: terraform -chdir=${{ matrix.lab }} init -backend=false -input=false
+      - name: Validate
+        run: terraform -chdir=${{ matrix.lab }} validate
+      - name: Test
+        if: matrix.lab == 'lab-05-testing'
+        run: terraform -chdir=${{ matrix.lab }} test
